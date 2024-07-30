@@ -1,3 +1,5 @@
+package com.biorhythms
+
 import android.app.Activity
 import android.app.DatePickerDialog
 import android.widget.DatePicker
@@ -10,7 +12,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -20,7 +21,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -30,8 +30,7 @@ import java.util.Date
 import java.util.Locale
 
 @Composable
-fun BiorithmsView() {
-    var text by remember { mutableStateOf(TextFieldValue("")) }
+fun BiorhythmsView() {
     var selectedDate by remember { mutableStateOf(Date()) }
 
     val context = LocalContext.current
@@ -97,5 +96,5 @@ fun BiorithmsView() {
 @Preview(showBackground = true)
 @Composable
 fun BiorithmsViewPreview() {
-    BiorithmsView()
+    BiorhythmsView()
 }

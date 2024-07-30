@@ -1,4 +1,4 @@
-package com.biorithms
+package com.biorhythms
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

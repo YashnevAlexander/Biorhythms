@@ -19,6 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Biorithms"
+rootProject.name = "Biorhythms"
 include(":app")
  

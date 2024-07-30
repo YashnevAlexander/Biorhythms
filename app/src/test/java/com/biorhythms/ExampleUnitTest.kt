@@ -1,4 +1,4 @@
-package com.biorithms
+package com.biorhythms
 
 import org.junit.Test
 

@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.biorithms"
+    namespace = "com.biorhythms"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.biorithms"
+        applicationId = "com.biorhythms"
         minSdk = 26
         targetSdk = 34
         versionCode = 1
