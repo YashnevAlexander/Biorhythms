@@ -24,18 +24,21 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
 @Composable
-fun BiorhythmsView() {
+fun BiorhythmsView(navController: NavController) {
     var selectedDate by remember { mutableStateOf(Date()) }
 
     val context = LocalContext.current
 
-    // Форматування дати у формат "день/місяць/рік"
     val dateFormat = remember { SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()) }
     val formattedDate = dateFormat.format(selectedDate)
 
@@ -57,13 +60,13 @@ fun BiorhythmsView() {
                     context,
                     { _: DatePicker, year: Int, month: Int, dayOfMonth: Int ->
                         calendar.set(year, month, dayOfMonth)
-//                        calendar.add(Calendar.YEAR, -1) // Зменшення дати на один рік
                         selectedDate = calendar.time
                     },
                     calendar.get(Calendar.YEAR),
                     calendar.get(Calendar.MONTH),
                     calendar.get(Calendar.DAY_OF_MONTH)
                 )
+                datePickerDialog.datePicker.maxDate = System.currentTimeMillis()
                 datePickerDialog.show()
             },
             modifier = Modifier.fillMaxWidth()
@@ -81,7 +84,7 @@ fun BiorhythmsView() {
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Button(onClick = { /* Handle Start action */ }) {
+            Button(onClick = { navController.navigate("biorhythms_draw") }) {
                 Text("Показати графічно")
             }
             Button(onClick = {
@@ -93,8 +96,3 @@ fun BiorhythmsView() {
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun BiorithmsViewPreview() {
-    BiorhythmsView()
-}
