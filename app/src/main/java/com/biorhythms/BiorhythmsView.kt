@@ -25,9 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
+import androidx.navigation.testing.TestNavHostController
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -96,3 +94,10 @@ fun BiorhythmsView(navController: NavController) {
     }
 }
 
+@Preview(showBackground = true)
+@Composable
+fun BiorhythmsViewPreview() {
+    val context = LocalContext.current
+    val navController = TestNavHostController(context)
+    BiorhythmsView(navController)
+}
