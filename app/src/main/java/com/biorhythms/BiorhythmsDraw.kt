@@ -1,11 +1,6 @@
 package com.biorhythms
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -19,7 +14,8 @@ import androidx.navigation.NavController
 import androidx.navigation.testing.TestNavHostController
 
 @Composable
-fun BiorhythmsDraw(navController: NavController) {
+fun BiorhythmsDraw(navController: NavController, viewModel: MyViewModel) {
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -37,10 +33,12 @@ fun BiorhythmsDraw(navController: NavController) {
         }
     }
 }
+
 @Preview(showBackground = true)
 @Composable
 fun BiorhythmsDrawPreview() {
     val context = LocalContext.current
     val navController = TestNavHostController(context)
-    BiorhythmsDraw(navController)
+    val viewModel = MyViewModel()
+    BiorhythmsDraw(navController, viewModel)
 }
