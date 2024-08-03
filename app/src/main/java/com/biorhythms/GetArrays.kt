@@ -1,15 +1,17 @@
 package com.biorhythms
 
-import java.time.LocalDate
+import co.yml.charts.common.model.Point
 import java.time.temporal.ChronoUnit
-import kotlin.math.sin
+import kotlin.math.*
 
 fun getArrays(data: DataForGraph) {
-    val numberOfDays : Int = ChronoUnit.DAYS.between(data.dob, LocalDate.now()).toInt()
+    val numberOfDays: Int = ChronoUnit.DAYS.between(data.dob, data.nowDay).toInt()
     val dayStart = numberOfDays - 10
-    val indices = (dayStart..numberOfDays + 30).toList()
 
-    data.physical.addAll(indices.map { sin(it.toDouble() / 23.69) })
-    data.emotional.addAll(indices.map { sin(it.toDouble() / 28.43) })
-    data.intellectual.addAll(indices.map { sin(it.toDouble() / 33.16) })
+    for (i in dayStart..numberOfDays + 30) {
+        val xValue = (i - dayStart).toFloat()
+        data.physical.add(Point(xValue, (sin(PHYSICAL_COEFF * i) * 10).toFloat(), ""))
+        data.emotional.add(Point(xValue, (sin(EMOTIONAL_COEFF * i) * 10).toFloat(), ""))
+        data.intellectual.add(Point(xValue, (sin(INTELLECTUAL_COEFF * i) * 10).toFloat(), ""))
+    }
 }

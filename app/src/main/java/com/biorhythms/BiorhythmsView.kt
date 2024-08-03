@@ -22,9 +22,9 @@ import java.util.*
 fun BiorhythmsView(navController: NavController, viewModel: MyViewModel) {
     val context = LocalContext.current
     var selectedDate by remember { mutableStateOf(viewModel.dataForGraph.dob) }
-    val calendar_m = Calendar.getInstance()
-    calendar_m.add(Calendar.DAY_OF_YEAR, -10)
-    val maxDate = calendar_m.timeInMillis
+    val calendarMaxD = Calendar.getInstance()
+    calendarMaxD.add(Calendar.DAY_OF_YEAR, -10)
+    val maxDate = calendarMaxD.timeInMillis
     Column(
         modifier = Modifier
             .fillMaxSize()
