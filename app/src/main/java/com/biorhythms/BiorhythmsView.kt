@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -21,10 +22,11 @@ import java.util.*
 @Composable
 fun BiorhythmsView(navController: NavController, viewModel: MyViewModel) {
     val context = LocalContext.current
-    var selectedDate by remember { mutableStateOf(viewModel.dataForGraph.dob) }
+    var selectedDate by rememberSaveable { mutableStateOf<LocalDate?>(viewModel.dataForGraph.dob.takeIf { it != LocalDate.now() }) }
     val calendarMaxD = Calendar.getInstance()
     calendarMaxD.add(Calendar.DAY_OF_YEAR, -10)
     val maxDate = calendarMaxD.timeInMillis
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -43,7 +45,7 @@ fun BiorhythmsView(navController: NavController, viewModel: MyViewModel) {
                     context,
                     { _: DatePicker, year: Int, month: Int, dayOfMonth: Int ->
                         selectedDate = LocalDate.of(year, month + 1, dayOfMonth)
-                        viewModel.updateDate(selectedDate)
+                        viewModel.updateDate(selectedDate!!)
                     },
                     calendar.get(Calendar.YEAR),
                     calendar.get(Calendar.MONTH),
@@ -57,19 +59,33 @@ fun BiorhythmsView(navController: NavController, viewModel: MyViewModel) {
             Text("Оберіть дату свого народження")
         }
 
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Text(text = "Обрано дату народження: ${selectedDate ?: ""}", fontSize = 18.sp)
+
         Spacer(modifier = Modifier.height(50.dp))
 
         Row(
             horizontalArrangement = Arrangement.SpaceAround,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Button(onClick = { navController.navigate("biorhythms_draw") }) {
-                Text("Показати графічно")
+            Button(
+                onClick = {
+                    navController.navigate("biorhythms_draw")
+                },
+                enabled = selectedDate != null,
+                modifier = Modifier.weight(1f)
+            ) {
+                Text("Показати")
             }
-            Button(onClick = {
-                (context as? Activity)?.finish()
-            }) {
-                Text("Завершити роботу")
+            Spacer(modifier = Modifier.width(36.dp))
+            Button(
+                onClick = {
+                    (context as? Activity)?.finish()
+                },
+                modifier = Modifier.weight(1f)
+            ) {
+                Text("Завершити")
             }
         }
     }

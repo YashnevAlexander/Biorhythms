@@ -7,9 +7,9 @@ import java.time.LocalDate
 data class DataForGraph(
     var dob: LocalDate,
     var nowDay : LocalDate,
-    var physical: MutableCollection<Point>,
-    var emotional: MutableCollection<Point>,
-    var intellectual: MutableCollection<Point>
+    var physical: MutableList<Point> = mutableListOf(),
+    var emotional:  MutableList<Point> = mutableListOf(),
+    var intellectual:  MutableList<Point> = mutableListOf()
 )
 
 class MyViewModel : ViewModel() {
@@ -26,6 +26,13 @@ class MyViewModel : ViewModel() {
     fun updateDate(dob: LocalDate) {
         dataForGraph.dob = dob
         dataForGraph.nowDay = LocalDate.now()
+        clearData()
         getArrays(dataForGraph)
+    }
+
+    private fun clearData() {
+        dataForGraph.physical.clear()
+        dataForGraph.emotional.clear()
+        dataForGraph.intellectual.clear()
     }
 }
