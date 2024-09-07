@@ -22,7 +22,7 @@ import java.util.*
 @Composable
 fun BiorhythmsView(navController: NavController, viewModel: MyViewModel) {
     val context = LocalContext.current
-    var selectedDate by rememberSaveable { mutableStateOf<LocalDate?>(viewModel.dataForGraph.dob.takeIf { it != LocalDate.now() }) }
+    var selectedDate by rememberSaveable { mutableStateOf(viewModel.dataForGraph.dob.takeIf { it != LocalDate.now() }) }
     val calendarMaxD = Calendar.getInstance()
     calendarMaxD.add(Calendar.DAY_OF_YEAR, -10)
     val maxDate = calendarMaxD.timeInMillis

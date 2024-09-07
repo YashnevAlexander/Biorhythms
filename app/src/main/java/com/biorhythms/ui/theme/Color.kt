@@ -12,7 +12,6 @@ class YChartsColors(
     text: Color,
     button: Color
 ) {
-
     var background by mutableStateOf(background)
         private set
     var primary by mutableStateOf(primary)
