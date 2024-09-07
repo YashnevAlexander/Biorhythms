@@ -1,28 +1,38 @@
 package com.biorhythms
 
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import androidx.navigation.NavController
-//import com.github.mikephil.charting.formatter.ValueFormatter
-//import com.github.mikephil.charting.components.AxisBase
-//import com.github.mikephil.charting.components.YAxis
-//import com.github.mikephil.charting.data.Entry
 
 @Composable
 fun BiorhythmsDraw(navController: NavController, viewModel: MyViewModel) {
     val context = LocalContext.current
     val chart = remember { LineChart(context) }
+
+    val configuration = LocalConfiguration.current
+    val screenWidth = configuration.screenWidthDp.dp
+    val screenHeight = configuration.screenHeightDp.dp
+
+    val isPortrait =
+        configuration.orientation == android.content.res.Configuration.ORIENTATION_PORTRAIT
 
     val dataForGraph = viewModel.dataForGraph
 
@@ -51,8 +61,11 @@ fun BiorhythmsDraw(navController: NavController, viewModel: MyViewModel) {
     xAxis.setDrawGridLines(false)
     xAxis.setDrawAxisLine(true)
     xAxis.setDrawLabels(true)
-    xAxis.setGranularity(1f) // Set the interval for axis labels
-    xAxis.setLabelCount(20, true) // Set the number of labels to be displayed
+    xAxis.setGranularity(1f)
+    xAxis.setLabelCount(
+        if (isPortrait) 10 else 20,
+        true
+    ) // Встановлює кількість міток залежно від орієнтації
 
     // Configure Y Axis
     val leftAxis = chart.axisLeft
@@ -63,22 +76,50 @@ fun BiorhythmsDraw(navController: NavController, viewModel: MyViewModel) {
     leftAxis.axisMaximum = 10f
 
     val rightAxis = chart.axisRight
-    rightAxis.isEnabled = false // Disable right Y axis
+    rightAxis.isEnabled = false
 
     // Enable scrolling and zooming
     chart.setDragEnabled(true)
     chart.setScaleEnabled(true)
     chart.isScaleXEnabled = true
-    chart.isScaleYEnabled = false // Disable vertical scaling
+    chart.isScaleYEnabled = false
 
     // Set the visible range for the X axis to enable scrolling
-    chart.setVisibleXRangeMaximum(20f) // Display 10 points at a time
-    chart.moveViewToX(0f) // Start view at the beginning of the data
+    chart.setVisibleXRangeMaximum(if (isPortrait) 10f else 30f) // Змінює видимий діапазон залежно від орієнтації
+    chart.moveViewToX(0f)
 
     chart.invalidate()
 
-    AndroidView(
-        factory = { chart },
-        modifier = Modifier.fillMaxSize()
-    )
+    Box(
+        modifier = Modifier.fillMaxSize() // Використовуємо Box для розміщення кнопки
+    ) {
+        // Кнопка повернення
+        IconButton(
+            onClick = { navController.popBackStack() }, // Повернення на попередній екран
+            modifier = Modifier
+                .align(Alignment.TopStart) // Розташовуємо в лівому верхньому куті
+                .padding(16.dp)
+        ) {
+            Icon(
+                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                contentDescription = "Back",
+                tint = Color.Black
+            )
+        }
+
+        Column(
+            modifier = Modifier
+                .fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            AndroidView(
+                factory = { chart },
+                modifier = Modifier
+                    .width(if (isPortrait) screenWidth * 0.95f else screenWidth * 0.8f) // Змінює ширину залежно від орієнтації
+                    .height(if (isPortrait) screenHeight * 0.5f else screenHeight * 0.8f) // Змінює висоту залежно від орієнтації
+                    .padding(16.dp)
+            )
+        }
+    }
 }
