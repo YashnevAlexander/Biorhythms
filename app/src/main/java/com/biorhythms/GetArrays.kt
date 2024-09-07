@@ -1,7 +1,6 @@
 package com.biorhythms
 
 import com.github.mikephil.charting.data.Entry
-import java.time.temporal.ChronoUnit
 import kotlin.math.*
 
 fun getArrays(data: DataForGraph) {
