@@ -20,6 +20,8 @@ import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import androidx.navigation.NavController
+import com.github.mikephil.charting.components.LimitLine
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 
 @Composable
 fun BiorhythmsDraw(navController: NavController, viewModel: MyViewModel) {
@@ -35,28 +37,36 @@ fun BiorhythmsDraw(navController: NavController, viewModel: MyViewModel) {
 
     val dataForGraph = viewModel.dataForGraph
 
-    val dataSet1 = LineDataSet(dataForGraph.physical, "Physical cycle").apply {
-        color = Color.Red.toArgb()
-        setDrawCircles(false)
-    }
-
-    val dataSet2 = LineDataSet(dataForGraph.emotional, "Emotional cycle").apply {
-        color = Color.Blue.toArgb()
-        setDrawCircles(false)
-    }
-
-    val dataSet3 = LineDataSet(dataForGraph.intellectual, "Intellectual cycle").apply {
+    val dataSet1 = LineDataSet(dataForGraph.physical, "Фізичний").apply {
         color = Color.Green.toArgb()
         setDrawCircles(false)
+        setDrawValues(false)
+    }
+
+    val dataSet2 = LineDataSet(dataForGraph.emotional, "Емоційний").apply {
+        color = Color.Red.toArgb()
+        setDrawCircles(false)
+        setDrawValues(false)
+    }
+
+    val dataSet3 = LineDataSet(dataForGraph.intellectual, "Інтелектуальний").apply {
+        color = Color.Blue.toArgb()
+        setDrawCircles(false)
+        setDrawValues(false)
     }
 
     val lineData = LineData(dataSet1, dataSet2, dataSet3)
     chart.data = lineData
+// Set general description
+    chart.description.text = "Biorhythm Cycles" // Текст опису
+    chart.description.textSize = 14f // Розмір тексту опису
+    chart.description.textColor = Color.DarkGray.toArgb() // Колір тексту опису
+    chart.description.isEnabled = true // Вмикає опис
 
-    // Configure X Axis
+    // Configure X Axis ------------------------------------------------------------------->
     val xAxis = chart.xAxis
     xAxis.position = XAxis.XAxisPosition.BOTTOM
-    xAxis.labelRotationAngle = 45f
+    xAxis.labelRotationAngle = 0f
     xAxis.setDrawGridLines(false)
     xAxis.setDrawAxisLine(true)
     xAxis.setDrawLabels(true)
@@ -65,14 +75,26 @@ fun BiorhythmsDraw(navController: NavController, viewModel: MyViewModel) {
         if (isPortrait) 10 else 20,
         true
     ) // Встановлює кількість міток залежно від орієнтації
+    xAxis.textColor = Color.Black.toArgb() // Колір тексту осі
+//    xAxis.textSize = 12f // Розмір тексту осі
+//    xAxis.valueFormatter = IndexAxisValueFormatter(listOf("Day 1", "Day 2", "Day 3")) // Форматування підписів
 
-    // Configure Y Axis
+    // Configure Y Axis------------------------------------------------------------------->
     val leftAxis = chart.axisLeft
     leftAxis.setDrawGridLines(true)
     leftAxis.setDrawAxisLine(true)
     leftAxis.setDrawLabels(true)
-    leftAxis.axisMinimum = -10f
-    leftAxis.axisMaximum = 10f
+    leftAxis.axisMinimum = -100f
+    leftAxis.axisMaximum = 100f
+    leftAxis.textColor = Color.Black.toArgb() // Колір тексту вісі   Y
+
+// Create a LimitLine for Y = 0
+    val zeroLine = LimitLine(0f, "0").apply {
+        lineWidth = 2f // Встановлює товщину лінії
+        lineColor = Color.Black.toArgb() // Колір лінії
+    }
+    leftAxis.addLimitLine(zeroLine)
+    
 
     val rightAxis = chart.axisRight
     rightAxis.isEnabled = false
